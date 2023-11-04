@@ -1,0 +1,4 @@
+<!-- partials/contractor_dropdown_list_options.html -->
+{% for contractor in contractors %}
+<option value="{{ contractor.pk }}">{{ contractor.Contractor_name }}</option>
+{% endfor %}

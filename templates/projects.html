@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+     <nav>
+        <div class="menu" >
+            <img src="{% static 'icons/hamburger menu.svg' %}" alt="" onclick="toggleNavigation()">
+        </div>
+        <ul>
+            <li>
+                <a href="">Profile</a>
+                <img src="{% static 'icons/dropdownarrowsvg.svg' %}" alt="">
+            </li>  
+        </ul>
+    </nav>
+    <div class="contentholder">
+        <div class="navigation">
+            
+            <img class="logo" src="{% static 'icons/Vivin-construction-and-engineering-logo.png' %}" alt="">
+            <div class="tabholder">
+                <div class="nav-tab" id="dashboard-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'dashboard' %}">Dashboard</a>
+                </div>
+                <div class="nav-tab" id="project-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'projects' %}">Project</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'attendance_recordlist' %}">Attendance</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="">Indents</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'attendancereport' %}">Ledgers</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="">Users</a>
+                </div>
+            </div>
+        </div>
+        <div class="displayboard">
+            <div class="whiteboard">
+                <div class="alignmentmaker">
+                    <h3>Projects</h3>
+                    <div class="bottonholder">
+                        <a href="{% url 'createproject' %}"><button>Add Project</button></a>
+                    </div>
+                    <div class="tableholder">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Project Location</th>
+                                    <th>Project_Start_date</th>
+                                    <th>Project_End_date</th>
+                                    <th>Project_Dimensions</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for projects in project %}
+                                <tr>
+                                    <td>{{ projects.Project_name }}</td>
+                                    <td>{{ projects.Project_location }}</td>
+                                    <td>{{ projects.Project_Start_date }}</td>
+                                    <td>{{ projects.Project_End_date  }}</td>
+                                    <td>{{ projects.Project_Dimensions }}</td>
+                                    <td class="action">
+                                        <a id="view" href="{% url 'projectdetail' projects.pk %}"><div class="buttonview">View</div></a>
+                                        <a id="update" href="{% url 'updateproject' projects.pk %}"><div class="button">Update</div></a>
+                                        <a id="delete" href=""><div class="buttondelete">Delete</div></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/navigation.js' %}"></script>
+    <script src="{% static 'js/active.js' %}"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+</body>
+</html>

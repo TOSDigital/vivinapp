@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+     <nav>
+        <div class="menu" >
+            <img src="{% static 'icons/hamburger menu.svg' %}" alt="" onclick="toggleNavigation()">
+        </div>
+        <ul>
+            <li>
+                <a href="">Profile</a>
+                <img src="{% static 'icons/dropdownarrowsvg.svg' %}" alt="">
+            </li>  
+        </ul>
+    </nav>
+    <div class="contentholder">
+        <div class="navigation">
+            
+            <img class="logo" src="{% static 'icons/Vivin-construction-and-engineering-logo.png' %}" alt="">
+            <div class="tabholder">
+                <div class="nav-tab"  onclick="toggleActive(this)">
+                    <a href="{% url 'dashboard' %}">Dashboard</a>
+                </div>
+                <div class="nav-tab"  onclick="toggleActive(this)">
+                    <a href="{% url 'projects' %}">Project</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'attendance_recordlist' %}">Attendance</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="">Indents</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'attendancereport' %}">Ledgers</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="">Users</a>
+                </div>
+            </div>
+        </div>
+        <div class="displayboard">
+            <div class="whiteboard">
+                <div class="alignmentmaker">
+                    <p>Welcome to Dashboard</p>
+                    <div class="boxholder">
+                        <div class="dash-card">
+                            <div class="heading">
+                                <h3>Projects</h3>
+                            </div>
+                            <div class="numbers">
+                                <p>20</p>
+                                <p>25</p>
+                                <p>30</p>
+                            </div>
+                        </div>
+                        <div class="dash-card">
+                            <div class="heading">
+                                <h3>Completed</h3>
+                            </div>
+                            <div class="numbers">
+                                <p>20</p>
+                                <p>25</p>
+                                <p>30</p>
+                            </div>
+                        </div>
+                        <div class="dash-card">
+                            <div class="heading">
+                                <h3>Indents</h3>
+                            </div>
+                            <div class="numbers">
+                                <p>20</p>
+                                <p>25</p>
+                                <p>30</p>
+                            </div>
+                        </div>
+                        <div class="dash-card">
+                            <div class="heading">
+                                <h3>Vendors</h3>
+                            </div>
+                            <div class="numbers">
+                                <p>20</p>
+                                <p>25</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/navigation.js' %}"></script>
+    <script src="{% static 'js/active.js' %}"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+</body>
+</html>

@@ -1,0 +1,336 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Montserrat;
+}
+nav{
+    background: #450C7D;
+    width: 100%;
+    height: 85px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+nav img{
+    margin-left: 3%;
+}
+nav ul{
+   width: 100%;
+   display: flex;
+   align-items: center;
+   justify-content: flex-end;
+}
+nav ul li{
+    
+    margin: 2%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+nav ul li img{
+    margin: 2%;
+    
+}
+nav ul li a{
+    text-decoration: none;
+    color: white;
+    font-family: Montserrat;
+}
+.contentholder{
+    width: 100%;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    background: #F6F6F6;
+    margin-top: 1%;
+}
+.navigation{
+    width: 20%;
+    height: 100%;
+    background: #FFF;
+    box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.25);
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    transition: width 0.5s ease-in-out;
+}
+
+.navigation.hidden {
+    width: 0;
+    overflow: hidden;
+    transition: width 0.5s ease-in-out;
+}
+
+.logo{
+    margin: 3%;
+    width: 80%;  
+}
+.displayboard{
+    width: 100%;
+    display: grid;
+    align-items: start;
+    justify-items: center;
+    transition: width 0.5s ease-in-out;
+}
+.menu{
+    width: 100%; 
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    height: 100%;
+}
+.menu img{
+    margin: 3% 5% 3% 3%;
+    cursor: pointer;
+}
+.nav-tab{
+    width: 100%;
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #E8E8E8;
+    cursor: pointer;
+    transition: .3s ease-in-out;
+}
+.nav-tab:hover{
+    background: #450C7D; 
+}
+.nav-tab a:hover{
+    color: white; 
+}
+.nav-tab.active {
+    background: #450C7D;
+    color: white; /* Change the background color for active tabs */
+    /* Add other styles for active tabs */
+    transition: .3s ease-in-out;
+}
+.nav-tab.active a{
+    color: white; /* Change the background color for active tabs */
+    /* Add other styles for active tabs */
+}
+.nav-tab a{
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    font-size: 20px;
+    color: black;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.tabholder{
+    width: 100%;
+}
+
+.whiteboard{
+    width: 98%;
+    background: white;
+    box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: start;
+    justify-content: center;
+}
+.alignmentmaker{
+    width: 90%;
+    display: grid;
+    align-items: start;
+    justify-items: center;
+
+
+}
+.alignmentmaker p{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+.alignmentmaker h3{
+    font-size: 30px;
+    margin: 2% 0% 2% 0%;
+    width: 100%;
+}
+.boxholder{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+}
+.dash-card{
+    width: 20%;
+    height: 120px;
+    border-radius: 10px;
+    background: #FFF;
+    box-shadow: 0px 5px 16px -2px rgba(0, 0, 0, 0.14);
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    margin: 2%;
+}
+.heading{
+    width: 90%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+.heading h3{
+    font-size: 23px;
+}
+.numbers{
+    width: 90%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+.numbers p{
+    margin: 2%;
+    font-size: 35px;
+}
+form{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+p{
+    display: grid;
+    align-items: center;
+    justify-items: left;
+    width: 40%;
+    margin: 3%;
+}
+label{
+    font-size: 16px;
+    margin: 1%;
+}
+input{
+    width: 100%;
+    height: 40px;
+    border: none;
+    box-shadow: 0px 0px 20px 9px rgba(0,0,0,0.1);
+    margin: 1%;
+    padding: 1%;
+    border-radius: 10px;
+
+}
+select{
+    width: 30%;
+    height: 40px;
+    border: none;
+    box-shadow: 0px 0px 20px 9px rgba(0,0,0,0.1);
+    margin: 1%;
+    padding: 1%;
+    border-radius: 10px;
+}
+button{
+    width: 200px;
+    height: 40px;
+    background-color: #450C7D;
+    color: #FFF;
+    border-radius: 20px;
+    margin: 2%;
+    cursor: pointer;
+}
+table{
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 16px;
+    width: 100%;
+    resize: horizontal;
+}
+table thead tr{
+    background: #450C7D;
+    color: #FFF;
+    font-weight: bold;
+    padding: 3%;
+    text-align: center;
+    height: 40px;
+}
+tr{
+    background: #E8E8E8;
+}
+tr:nth-child(even){
+    background: white;
+}
+tr:last-child{
+    border-bottom: 10px solid#450C7D;
+    
+}
+
+th, td{
+    padding: 12px;
+    height: 40px;
+    text-align: center;
+    overflow-x: auto;
+    resize: horizontal;
+}
+.action{
+    padding: 12px;
+    height: 40px;
+    text-align: center;
+    overflow-x: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+#update{
+    text-decoration: none;
+    color: white;
+}
+#delete{
+    text-decoration: none;
+    color: white;
+}
+#view{
+    text-decoration: none;
+    color: #FFF;
+}
+.button{
+    background: #1b6c09;
+    width: 80px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.buttondelete{
+    background: #e70505;
+    width: 80px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.buttonview{
+    background: #0665be;
+    width: 80px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bottonholder{
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    flex-wrap: wrap;
+}
+a{
+    margin: 2%;
+}
+.tableholder{
+    width: 100%;
+    overflow-x: scroll;
+    white-space: nowrap;
+    
+}
