@@ -47,36 +47,25 @@
         <div class="displayboard">
             <div class="whiteboard">
                 <div class="alignmentmaker">
-                    <h3>Attendance</h3>
+                    <h3>Material Category</h3>
                     <div class="bottonholder">
-                        <a href="{% url 'attendance_record' %}"><button>Add Attendance</button></a>
+                        <a href="{% url 'materialcategorycreate' %}"><button>Add Material Category</button></a>
+                        
                     </div>
                     <div class="tableholder">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Project Name</th>
-                                    <th>Project Contractor</th>
-                                    <th>Project Labor Type</th>
-                                    <th>No of workers</th>
-                                    <th>Remarks</th>
+                                    <th>Material Category List</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for rlist in recordlist %}
+                                {% for Material in materialcategories %}
                                 <tr>
-                                    <td>{{ rlist.date }}</td>
-                                    <td>{{ rlist.project }}</td>
-                                    <td>{{ rlist.contractor }}</td>
-                                    <td>{{ rlist.labor_type }}</td>
-                                    <td>{{ rlist.number_of_workers }}</td>
-                                    <td>{{ rlist.Remarks  }}</td>
-                                    
+                                    <td>{{ Material.CategoryName }}</td>
                                     <td class="action">
-                                        <a id="update" href="{% url 'attendance_recordupdate' rlist.pk %}"><div class="button">Update</div></a>
-                                        <a id="delete" href="{% url 'attendance_recorddelete' rlist.pk %}"><div class="buttondelete">Delete</div></a>
+                                        <a id="delete" href="{% url 'materialcategorydelete' Material.pk %}"><div class="buttondelete">Delete</div></a>
                                     </td>
                                 </tr>
                                 {% endfor %}

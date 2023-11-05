@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Overtime</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+     <nav>
+        <div class="menu" >
+            <img src="{% static 'icons/hamburger menu.svg' %}" alt="" onclick="toggleNavigation()">
+        </div>
+        <ul>
+            <li>
+                <a href="">Profile</a>
+                <img src="{% static 'icons/dropdownarrowsvg.svg' %}" alt="">
+            </li>  
+        </ul>
+    </nav>
+    <div class="contentholder">
+        <div class="navigation">
+            
+            <img class="logo" src="{% static 'icons/Vivin-construction-and-engineering-logo.png' %}" alt="">
+            <div class="tabholder">
+                <div class="nav-tab" id="dashboard-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'dashboard' %}">Dashboard</a>
+                </div>
+                <div class="nav-tab" id="project-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'projects' %}">Project</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'attendance_recordlist' %}">Attendance</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="">Indents</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="">Ledgers</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="">Users</a>
+                </div>
+            </div>
+        </div>
+        <div class="displayboard">
+            <div class="whiteboard">
+                <div class="alignmentmaker">
+                    <h3>Overtime Report</h3>
+                    <form method="post" id="overtimeWageForm">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" name="show_results">Show Results</button>
+                        <button type="submit" name="download_excel">Download as Excel</button>
+                    </form>
+                    
+                    <div class="tableholder">
+                        {% if overtime_data %}
+                            <h2>Overtime Wage Report</h2>
+                            <h3>Project: {{ project.Project_name }}</h3>
+                            <h4>Contractor: {{ contractor.Contractor_name }}</h4>
+                            <h5>Period: {{ from_date }} to {{ to_date }}</h5>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Labor Type</th>
+                                    <th>Overtime Wage per Hour</th>
+                                    <th>Total Hours</th>
+                                    <th>Total Workers</th>
+                                    <th>Total Overtime Wage</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in overtime_data %}
+                                    <tr>
+                                    <td>{{ item.labor_type }}</td>
+                                    <td>{{ item.overtime_wage }}</td>
+                                    <td>{{ item.total_hours }}</td>
+                                    <td>{{ item.total_workers }}</td>
+                                    <td>{{ item.total_overtime_wage }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th>Total Overtime Wage:</th>
+                                    <th>{{ total_wage }}</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                            {% endif %}
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/navigation.js' %}"></script>
+    <script src="{% static 'js/active.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#id_project').change(function () {
+          var url = "{% url 'ajax_load_contractors' %}";
+          var projectId = $(this).val();
+        
+          $.ajax({
+            url: url,
+            data: {
+              'project': projectId
+            },
+            success: function (data) {
+              $("#id_contractor").html(data);
+            }
+          });
+        });
+        </script>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+</body>
+</html>

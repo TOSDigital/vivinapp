@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, User, UserProfile, OfficeLogin, SiteEngineer, AttendanceRecord, LaborTypes, Contractor
+from .models import *
 # from .forms import ProjectCreationForm
 from decimal import Decimal
 
@@ -27,5 +27,9 @@ admin.site.register(UserProfile)
 admin.site.register(OfficeLogin)
 admin.site.register(SiteEngineer)
 admin.site.register(AttendanceRecord)
-
 admin.site.register(Contractor)
+admin.site.register(OvertimeRecord)
+admin.site.register(MaterialCategory)
+
+admin.site.register(Material)
+admin.site.register(Indent)

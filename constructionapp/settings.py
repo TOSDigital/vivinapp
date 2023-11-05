@@ -140,5 +140,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 AUTH_USER_MODEL = 'attandance.User'
-# LOGIN_REDIRECT_URL = "/sales"
-# LOGIN_URL = "/login"
+LOGIN_REDIRECT_URL = "/office"
+LOGIN_URL = "/login"

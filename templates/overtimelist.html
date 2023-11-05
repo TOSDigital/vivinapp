@@ -49,7 +49,8 @@
                 <div class="alignmentmaker">
                     <h3>Attendance</h3>
                     <div class="bottonholder">
-                        <a href="{% url 'attendance_record' %}"><button>Add Attendance</button></a>
+                        <a href="{% url 'overtimecreate' %}"><button>Add Overtime</button></a>
+                        <a href="{% url 'overtime_wage_calculation' %}"><button>Overtime Report</button></a>
                     </div>
                     <div class="tableholder">
                         <table>
@@ -60,23 +61,25 @@
                                     <th>Project Contractor</th>
                                     <th>Project Labor Type</th>
                                     <th>No of workers</th>
+                                    <th>No of Hours</th>
                                     <th>Remarks</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for rlist in recordlist %}
+                                {% for overtime in overtimewage %}
                                 <tr>
-                                    <td>{{ rlist.date }}</td>
-                                    <td>{{ rlist.project }}</td>
-                                    <td>{{ rlist.contractor }}</td>
-                                    <td>{{ rlist.labor_type }}</td>
-                                    <td>{{ rlist.number_of_workers }}</td>
-                                    <td>{{ rlist.Remarks  }}</td>
+                                    <td>{{ overtime.date }}</td>
+                                    <td>{{ overtime.project }}</td>
+                                    <td>{{ overtime.contractor }}</td>
+                                    <td>{{ overtime.labor_type }}</td>
+                                    <td>{{ overtime.number_of_workers }}</td>
+                                    <td>{{ overtime.number_of_hours }}</td>
+                                    <td>{{ overtime.Remarks  }}</td>
                                     
                                     <td class="action">
-                                        <a id="update" href="{% url 'attendance_recordupdate' rlist.pk %}"><div class="button">Update</div></a>
-                                        <a id="delete" href="{% url 'attendance_recorddelete' rlist.pk %}"><div class="buttondelete">Delete</div></a>
+                                        <a id="update" href="{% url 'overtimeupdate' overtime.pk %}"><div class="button">Update</div></a>
+                                        <a id="delete" href="{% url 'overtimedelete' overtime.pk %}"><div class="buttondelete">Delete</div></a>
                                     </td>
                                 </tr>
                                 {% endfor %}

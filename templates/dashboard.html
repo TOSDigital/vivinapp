@@ -34,10 +34,22 @@
                     <a href="{% url 'attendance_recordlist' %}">Attendance</a>
                 </div>
                 <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'overtimelist' %}">Overtime</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
                     <a href="">Indents</a>
                 </div>
                 <div class="nav-tab" onclick="toggleActive(this)">
-                    <a href="{% url 'attendancereport' %}">Ledgers</a>
+                    <a href="{% url 'contractorslist' %}">Contractor</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'labortypelist' %}">Labor Types</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'materialcategorylist' %}">Material Categories</a>
+                </div>
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'allreports' %}">Ledgers</a>
                 </div>
                 <div class="nav-tab" onclick="toggleActive(this)">
                     <a href="">Users</a>

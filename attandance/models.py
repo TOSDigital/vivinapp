@@ -68,7 +68,7 @@ class Contractor(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return f"{self.Contractor_name} {self.Project}"
+        return f"{self.Contractor_name} - {self.Project}"
 
 class LaborTypes(models.Model):
     Contractor = models.ForeignKey(Contractor, on_delete=models.DO_NOTHING)
@@ -88,19 +88,56 @@ class LaborTypes(models.Model):
 
 
     def __str__(self):
-        return f"{self.Contractor} {self.Labor_type}"
+        return f"{self.Contractor} - {self.Labor_type}"
 
 class AttendanceRecord(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    contractor = models.ForeignKey(Contractor, on_delete=models.CASCADE)
-    labor_type = models.ForeignKey(LaborTypes, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.DO_NOTHING)
+    contractor = models.ForeignKey(Contractor, on_delete=models.DO_NOTHING)
+    labor_type = models.ForeignKey(LaborTypes, on_delete=models.DO_NOTHING)
     date = models.DateField(auto_now_add=True)  # This will automatically set the current date when the record is created
     number_of_workers = models.PositiveIntegerField()
-
     Remarks = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.project} {self.contractor} {self.labor_type} {self.date}"
+        return f"{self.project} - {self.contractor} - {self.labor_type} - {self.date}"
+
+class OvertimeRecord(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.DO_NOTHING)
+    contractor = models.ForeignKey(Contractor, on_delete=models.DO_NOTHING)
+    labor_type = models.ForeignKey(LaborTypes, on_delete=models.DO_NOTHING)
+    date = models.DateField(auto_now_add=True)  # This will automatically set the current date when the record is created
+    number_of_workers = models.PositiveIntegerField()
+    number_of_hours = models.PositiveIntegerField()
+    Remarks = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.project} - {self.contractor} - {self.labor_type} - {self.date}"
+
+
+class MaterialCategory(models.Model):
+    CategoryName = models.CharField(max_length=300)
+
+    def __str__(self):
+        return self.CategoryName
+
+class Material(models.Model):
+    category = models.ForeignKey(MaterialCategory, on_delete=models.DO_NOTHING)
+    Materialname = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.Materialname
+
+class Indent(models.Model):
+    Project = models.ForeignKey(Project, on_delete=models.DO_NOTHING)
+    CategoryName = models.ForeignKey(MaterialCategory, on_delete=models.DO_NOTHING)
+    Material = models.ForeignKey(Material, on_delete=models.DO_NOTHING)
+    Quantity = models.DecimalField(decimal_places=2, max_digits=10, default="0")
+    Quantity_order_status = models.BooleanField()
+    Quantity_Recieved_status = models.BooleanField()
+
+
+    
+
 
 
 def post_user_created_signal(sender, instance, created, **kwargs):
