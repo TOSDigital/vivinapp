@@ -4,32 +4,41 @@ from django.views.generic import ListView, UpdateView, DeleteView, DetailView, T
 from .forms import *
 import openpyxl
 from openpyxl import Workbook
+from django.contrib.auth.mixins import LoginRequiredMixin
 from openpyxl.styles import Alignment
 from openpyxl.utils import get_column_letter
 from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 from django.db.models import Sum, F, DecimalField, Q
 from decimal import Decimal
+from .signals import order_status_changed, received_status_changed
 
 # Create your views here.
 
 # Proejct Views
-class DashboardView(TemplateView):
+class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
 
-class ProjectListView(ListView):
+class SignupView(LoginRequiredMixin, CreateView):
+    template_name = "registration/signup.html"
+    form_class = CreateCustomUser
+
+    def get_success_url(self):
+        return reverse("login")
+
+class ProjectListView(LoginRequiredMixin, ListView):
     template_name = 'projects.html'
     queryset = Project.objects.all().order_by('-id')
     context_object_name = 'project'
 
-class ProjectCreateView(CreateView):
+class ProjectCreateView(LoginRequiredMixin, CreateView):
     template_name = 'projectcreate.html'
     form_class = ProjectCreationForm
 
     def get_success_url(self):
         return reverse("projects")
 
-class ProjectUpdateView(UpdateView):
+class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "projectupdate.html"
     model = Project
     form_class = ProjectCreationForm
@@ -39,7 +48,7 @@ class ProjectUpdateView(UpdateView):
     def get_success_url(self):
         return reverse("projects")
 
-class ProjectDeatilView(DetailView):
+class ProjectDeatilView(LoginRequiredMixin, DetailView):
     template_name = "projectdetail.html"
     model = Project
     context_object_name = 'projectdetail'
@@ -47,13 +56,18 @@ class ProjectDeatilView(DetailView):
 # project Views End 
 
 # Attandance Feature start
-class AttendanceRecordCreateView(CreateView):
+class AttendanceRecordCreateView(LoginRequiredMixin, CreateView):
     model = AttendanceRecord
     form_class = AttendanceRecordForm
     template_name = 'attendance_record.html'
     
     def get_success_url(self):
         return reverse("attendance_recordlist")
+
+    def get_form_kwargs(self):
+        kwargs = super(AttendanceRecordCreateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user  # Add the user to the form kwargs
+        return kwargs
 
 def load_contractors(request):
     project_id = request.GET.get('project')
@@ -68,13 +82,13 @@ def load_labor_types(request):
     labor_types = LaborTypes.objects.filter(Contractor_id=contractor_id).order_by('Labor_type')
     return render(request, 'partials/labor_type_dropdown_list_options.html', {'labor_types': labor_types})
 
-class AttendanceRecordListView(ListView):
+class AttendanceRecordListView(LoginRequiredMixin, ListView):
     model = AttendanceRecord
     queryset = AttendanceRecord.objects.all().order_by('-id')
     template_name = "attendance_record_list.html"
     context_object_name = 'recordlist'
 
-class AttendanceRecordUpdateView(UpdateView):
+class AttendanceRecordUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "attendance_record_list_update.html"
     model = AttendanceRecord
     context_object_name = 'attendance'
@@ -86,7 +100,7 @@ class AttendanceRecordUpdateView(UpdateView):
     def get_success_url(self):
         return reverse("attendance_recordlist")
 
-class AttendanceRecordDeleteView(DeleteView):
+class AttendanceRecordDeleteView(LoginRequiredMixin, DeleteView):
     model = AttendanceRecord
     context_object_name = 'attendancerecord'
     template_name = "attendance_record_delete.html"
@@ -98,13 +112,13 @@ class AttendanceRecordDeleteView(DeleteView):
 
 # Reports start
 
-class AllReports(TemplateView):
+class AllReports(LoginRequiredMixin, TemplateView):
     template_name = "reports.html"
 
 # Reports end
 
 # Attandance report View 
-class WageCalculationView(FormView):
+class WageCalculationView(LoginRequiredMixin, FormView):
     form_class = WageCalculationForm
     template_name = 'laborreport.html'
 
@@ -197,13 +211,13 @@ class WageCalculationView(FormView):
         return self.render_to_response(context)
 
 # Add this view to handle the AJAX request for the contractor dropdown
-class ContractorOptionsView(View):
+class ContractorOptionsView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         project_id = request.GET.get('project')
         contractors = Contractor.objects.filter(Project_id=project_id)
         return JsonResponse(list(contractors.values('id', 'Contractor_name')), safe=False)
 
-class OvertimeWageCalculationView(FormView):
+class OvertimeWageCalculationView(LoginRequiredMixin, FormView):
     form_class = OvertimeWageCalculationForm
     template_name = 'overtime_wage_calculation.html'
 
@@ -295,7 +309,7 @@ class OvertimeWageCalculationView(FormView):
         return response
 
 
-class LoadContractorsView(View):
+class LoadContractorsView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         project_id = request.GET.get('project_id')
         contractors = Contractor.objects.filter(Project_id=project_id).order_by('Contractor_name')
@@ -305,14 +319,14 @@ class LoadContractorsView(View):
 
 # contractor views start
 
-class ContractorListView(ListView):
+class ContractorListView(LoginRequiredMixin, ListView):
     template_name = "contractorlist.html"
     model = Contractor
     queryset = Contractor.objects.all().order_by('-id')
     context_object_name = "contractors"
 
 
-class ContractorCreateView(CreateView):
+class ContractorCreateView(LoginRequiredMixin, CreateView):
     template_name = "contractorcreate.html"
     model = Contractor
     form_class = ContractorForm
@@ -320,7 +334,7 @@ class ContractorCreateView(CreateView):
     def get_success_url(self):
         return reverse("attendance_recordlist")
 
-class ContractorUpdateView(UpdateView):
+class ContractorUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "contractorupdate.html"
     model = Contractor
     form_class = ContractorForm
@@ -328,7 +342,7 @@ class ContractorUpdateView(UpdateView):
     def get_success_url(self):
         return reverse("attendance_recordlist")
 
-class ContractorDeleteView(DeleteView):
+class ContractorDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "contractordelete.html"
     model = Contractor
     context_object_name = "contractor"
@@ -341,13 +355,13 @@ class ContractorDeleteView(DeleteView):
 # Labortype Views start
 
 
-class LaborTypeListView(ListView):
+class LaborTypeListView(LoginRequiredMixin, ListView):
     template_name = "labortypelist.html"
     model = LaborTypes
     queryset = LaborTypes.objects.all().order_by('-id')
     context_object_name = "labortypes"
 
-class LaborTypeCreateView(CreateView):
+class LaborTypeCreateView(LoginRequiredMixin, CreateView):
     template_name = "labortypecreate.html"
     model = LaborTypes
     form_class = LaborTypeForm
@@ -360,7 +374,7 @@ class LaborTypeCreateView(CreateView):
     def get_success_url(self):
         return reverse("labortypelist")
 
-class LaborTypeUpdateView(UpdateView):
+class LaborTypeUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "labortypeupdate.html"
     model = LaborTypes
     form_class = LaborTypeForm
@@ -368,7 +382,7 @@ class LaborTypeUpdateView(UpdateView):
     def get_success_url(self):
         return reverse("labortypelist")
 
-class LaborTypeDeleteView(DeleteView):
+class LaborTypeDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "labortypedelete.html"
     model = LaborTypes
     context_object_name = "labortype"
@@ -376,7 +390,7 @@ class LaborTypeDeleteView(DeleteView):
     def get_success_url(self):
         return reverse("labortypelist")
 
-class LaborTypeDeatilView(DetailView):
+class LaborTypeDeatilView(LoginRequiredMixin, DetailView):
     template_name = "labortypeview.html"
     model = LaborTypes
     context_object_name = "labor"
@@ -385,18 +399,23 @@ class LaborTypeDeatilView(DetailView):
 
 # overtime Views start
 
-class OvertimeListView(ListView):
+class OvertimeListView(LoginRequiredMixin, ListView):
     model = OvertimeRecord
     template_name = "overtimelist.html"
     context_object_name = "overtimewage"
 
-class OvertimeCreateView(CreateView):
+class OvertimeCreateView(LoginRequiredMixin, CreateView):
     model = OvertimeRecord
     template_name = "overtimecreate.html"
     form_class = OvertimeRecordForm
 
     def get_success_url(self):
         return reverse("overtimelist")
+
+    def get_form_kwargs(self):
+        kwargs = super(OvertimeCreateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user  # Add the user to the form kwargs
+        return kwargs
 
 def load_contractors(request):
     project_id = request.GET.get('project')
@@ -411,7 +430,7 @@ def load_labor_types(request):
     labor_types = LaborTypes.objects.filter(Contractor_id=contractor_id).order_by('Labor_type')
     return render(request, 'partials/labor_type_dropdown_list_options.html', {'labor_types': labor_types})
 
-class OvertimeUpdateView(UpdateView):
+class OvertimeUpdateView(LoginRequiredMixin, UpdateView):
     model = OvertimeRecord
     template_name = "overtimeupdate.html"
     fields = (
@@ -422,7 +441,7 @@ class OvertimeUpdateView(UpdateView):
     def get_success_url(self):
         return reverse("overtimelist")
 
-class OvertimeDeleteView(DeleteView):
+class OvertimeDeleteView(LoginRequiredMixin, DeleteView):
     model = OvertimeRecord
     template_name = "overtimedelete.html"
     context_object_name = "overtime"
@@ -432,13 +451,13 @@ class OvertimeDeleteView(DeleteView):
 
 # overtime view end
 
-# Indents View
-class MaterialCategoryList(ListView):
+# material category and material view start
+class MaterialCategoryList(LoginRequiredMixin, ListView):
     template_name = "materialcategorylist.html"
     queryset = MaterialCategory.objects.all()
     context_object_name = "materialcategories"
     
-class MaterialCreateView(CreateView):
+class MaterialCreateView(LoginRequiredMixin, CreateView):
     model = MaterialCategory
     template_name = "materialcategorycreate.html"
     form_class = MaterialCategoryForm
@@ -446,13 +465,75 @@ class MaterialCreateView(CreateView):
     def get_success_url(self):
         return reverse("materialcategorylist")
 
-class MaterialDeleteView(DeleteView):
+class MaterialDeleteView(LoginRequiredMixin, DeleteView):
     model = MaterialCategory
     template_name = "materialcategorydelete.html"
     context_object_name = "materialcategory"
 
     def get_success_url(self):
         return reverse("materialcategorylist")
+
+class MaterialList(LoginRequiredMixin, ListView):
+    template_name = "materiallist.html"
+    queryset = Material.objects.all()
+    context_object_name = "materials"
+
+class MaterialCreateView(LoginRequiredMixin, CreateView):
+    model = Material
+    template_name = "materialcreate.html"
+    form_class = MaterialForm
+
+    def get_success_url(self):
+        return reverse("materiallist")
+
+class MaterialListDeleteView(LoginRequiredMixin, DeleteView):
+    model = Material
+    template_name = "materialdelete.html"
+    context_object_name = "materials"
+
+    def get_success_url(self):
+        return reverse("materialcategorylist")
+
+# material category and material view end
+
+# indent view start
+
+class IndentListView(LoginRequiredMixin, ListView):
+    template_name = "indentlist.html"
+    model = Indent
+    context_object_name = "indents"
+
+class IndentCreateView(LoginRequiredMixin, CreateView):
+    model = Indent
+    form_class = IndentCreateForm
+    template_name = 'indentcreate.html'
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        # Send notification if required.
+        return response
+
+    def get_success_url(self):
+        return reverse("indentlist")
+
+class IndentUpdateView(LoginRequiredMixin, UpdateView):
+    model = Indent
+    form_class = IndentUpdateForm
+    template_name = 'indentupdate.html'
+    
+
+    def form_valid(self, form):
+        indent = form.save(commit=False)
+        if 'Quantity_order_status' in form.changed_data:
+            order_status_changed.send(sender=self.__class__, instance=indent)
+        if 'Quantity_Recieved_status' in form.changed_data:
+            received_status_changed.send(sender=self.__class__, instance=indent)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("indentlist")
+
+# indent view end
 
 
     

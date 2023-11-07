@@ -16,7 +16,7 @@ class User(AbstractUser):
     is_site_engineer = models.BooleanField(default=False)
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
@@ -34,6 +34,8 @@ class Project(models.Model):
     Builtup_area = models.CharField(max_length=100000)
     Length = MeasurementField(measurement=Area)
     Breadth = MeasurementField(measurement=Area)
+    site_engineers = models.ManyToManyField('SiteEngineer', related_name='projects')
+    
 
     def save(self, *args, **kwargs):
         if self.Length is None:  # Set default Length if it's not provided
@@ -46,7 +48,7 @@ class Project(models.Model):
         return self.Project_name
 
 class OfficeLogin(models.Model):
-    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=300)
     email = models.EmailField()
     phone = models.CharField(max_length=10)
@@ -55,7 +57,7 @@ class OfficeLogin(models.Model):
         return self.name
 
 class SiteEngineer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=300)
     email = models.EmailField()
     phone = models.CharField(max_length=10)
@@ -128,12 +130,20 @@ class Material(models.Model):
         return self.Materialname
 
 class Indent(models.Model):
+    date = models.DateField(auto_now_add=True)
+    indent_no = models.IntegerField(null=True, blank=True)
     Project = models.ForeignKey(Project, on_delete=models.DO_NOTHING)
     CategoryName = models.ForeignKey(MaterialCategory, on_delete=models.DO_NOTHING)
     Material = models.ForeignKey(Material, on_delete=models.DO_NOTHING)
     Quantity = models.DecimalField(decimal_places=2, max_digits=10, default="0")
-    Quantity_order_status = models.BooleanField()
-    Quantity_Recieved_status = models.BooleanField()
+    Quantity_order_status = models.BooleanField(default=False)
+    Quantity_Recieved_status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.indent_no
+
+
+    
 
 
     

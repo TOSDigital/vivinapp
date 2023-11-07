@@ -25,10 +25,14 @@ from django.contrib.auth.views import(
     PasswordResetCompleteView
 
 )
+from attandance.views import SignupView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('attandance.urls')),
+    path('officeuser/', include('officeuser.urls')),
+    path('siteuser/', include('sitelogin.urls')),
+    path('signup/', SignupView.as_view(), name='signup'),
     path('reset-password/', PasswordResetView.as_view(), name='reset-password'),
     path('password-reset-done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),

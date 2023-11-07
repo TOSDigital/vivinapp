@@ -14,8 +14,13 @@
         </div>
         <ul>
             <li>
+                {% if request.user.is_authenticated %}
+                <a href="">{{ request.user.username }}</a>
+                <a href="{% url 'logout' %}">Log Out</a> 
+                {% else %}
                 <a href="">Profile</a>
                 <img src="{% static 'icons/dropdownarrowsvg.svg' %}" alt="">
+                {% endif %}
             </li>  
         </ul>
     </nav>
@@ -24,24 +29,61 @@
             
             <img class="logo" src="{% static 'icons/Vivin-construction-and-engineering-logo.png' %}" alt="">
             <div class="tabholder">
-                <div class="nav-tab" id="dashboard-tab" onclick="toggleActive(this)">
+                {% if request.user.is_admin or request.user.is_office_login %}
+                <div class="nav-tab"  onclick="toggleActive(this)">
                     <a href="{% url 'dashboard' %}">Dashboard</a>
                 </div>
-                <div class="nav-tab" id="project-tab" onclick="toggleActive(this)">
+                {% endif %}
+                {% if request.user.is_admin or request.user.is_office_login %}
+                <div class="nav-tab"  onclick="toggleActive(this)">
                     <a href="{% url 'projects' %}">Project</a>
                 </div>
+                {% endif %}
+                {% if request.user.is_admin or request.user.is_office_login or request.user.is_site_engineer %}
                 <div class="nav-tab" onclick="toggleActive(this)">
                     <a href="{% url 'attendance_recordlist' %}">Attendance</a>
                 </div>
+                {% endif %}
+                {% if request.user.is_admin or request.user.is_office_login or request.user.is_site_engineer %}
                 <div class="nav-tab" onclick="toggleActive(this)">
-                    <a href="">Indents</a>
+                    <a href="{% url 'overtimelist' %}">Overtime</a>
                 </div>
+                {% endif %}
+                {% if request.user.is_admin or request.user.is_office_login or request.user.is_site_engineer %}
                 <div class="nav-tab" onclick="toggleActive(this)">
-                    <a href="">Ledgers</a>
+                    <a href="{% url 'indentlist' %}">Indents</a>
                 </div>
+                {% endif %}
+                {% if request.user.is_admin or request.user.is_office_login %}
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'contractorslist' %}">Contractor</a>
+                </div>
+                {% endif %}
+                {% if request.user.is_admin or request.user.is_office_login %}
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'labortypelist' %}">Labor Types</a>
+                </div>
+                {% endif %}
+                {% if request.user.is_admin or request.user.is_office_login %}
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'materialcategorylist' %}">Material Categories</a>
+                </div>
+                {% endif %}
+                {% if request.user.is_admin or request.user.is_office_login %}
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'materiallist' %}">Material List</a>
+                </div>
+                {% endif %}
+                {% if request.user.is_admin or request.user.is_office_login %}
+                <div class="nav-tab" onclick="toggleActive(this)">
+                    <a href="{% url 'allreports' %}">Ledgers</a>
+                </div>
+                {% endif %}
+                {% if request.user.is_admin or request.user.is_office_login %}
                 <div class="nav-tab" onclick="toggleActive(this)">
                     <a href="">Users</a>
                 </div>
+                {% endif %}
             </div>
         </div>
         <div class="displayboard">

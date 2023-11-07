@@ -6,7 +6,6 @@ from . import views
 from django.conf.urls.static import static
 
 urlpatterns = [
-    
     path('office/', DashboardView.as_view(), name='dashboard'),
     path('projects/', ProjectListView.as_view(), name='projects'),
     path('createproject/', ProjectCreateView.as_view(), name='createproject'),
@@ -39,14 +38,12 @@ urlpatterns = [
     path('materialcategories/', MaterialCategoryList.as_view(), name='materialcategorylist'),
     path('materialcategoriescreate/', MaterialCreateView.as_view(), name='materialcategorycreate'),
     path('materialcategorydelete/<int:pk>/', MaterialDeleteView.as_view(), name='materialcategorydelete'),
-
+    path('materiallist/', MaterialList.as_view(), name='materiallist'),
+    path('materialcreate/', MaterialCreateView.as_view(), name='materialcreate'),
+    path('materialdelete/<int:pk>/', MaterialListDeleteView.as_view(), name='materialdelete'),
+    path('indentlist/', IndentListView.as_view(), name='indentlist'),
+    path('indentsitecreate/', IndentCreateView.as_view(), name='indentcreate'),
+    path('indentupdate/<int:pk>/', IndentUpdateView.as_view(), name='indentupdate'),
 
     
-
-
-
-
-
-
-
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
